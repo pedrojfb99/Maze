@@ -22,23 +22,23 @@ using namespace glm;
 GLuint VertexArrayID;
 
 // Vertex buffer object (VBO)
-GLuint vertexbuffer;
 GLuint plan;
+GLuint walls;
 
 // color buffer object (CBO)
-GLuint colorbuffer;
 GLuint plan_colorbuffer;
+GLuint walls_collor;
 
 // GLSL program from the shaders
 GLuint programID;
 
 // Matrix id of the MVP
 GLuint MatrixID;
-glm::mat4 MVP_cube;
 glm::mat4 MVP_plan;
+glm::mat4 MVP_walls;
 
 glm::mat4 plan_Model = glm::mat4(1.0f);
-glm::mat4 cube_Model = glm::mat4(1.0f);
+glm::mat4 walls_Model = glm::mat4(1.0f);
 
 glm::mat4 Projection = glm::mat4(1.0f);
 glm::mat4 View = glm::mat4(1.0f);
@@ -46,7 +46,7 @@ glm::mat4 View = glm::mat4(1.0f);
 GLint WindowWidth = 1024;
 GLint WindowHeight = 768;
 
-float x = 0.0, z = 0.0, delta = 0.5, angulo = 0.0;
+
 
 //--------------------------------------------------------------------------------
 void transferDataToGPUMemory(void)
@@ -60,11 +60,11 @@ void transferDataToGPUMemory(void)
 
     static const GLfloat plan_data[] = {
         0.0f, 0.0f,  0.0f,
-        0.0f, 0.0f, 20.0f,
-       20.0f, 0.0f, 20.0f,
-       20.0f, 0.0f, 20.0f,
+        0.0f, 0.0f, 40.0f,
+       40.0f, 0.0f, 40.0f,
+       40.0f, 0.0f, 40.0f,
         0.0f, 0.0f,  0.0f, 
-       20.0f, 0.0f,  0.0f
+       40.0f, 0.0f,  0.0f
     };
 
     static const GLfloat plan_color[] = {
@@ -76,89 +76,64 @@ void transferDataToGPUMemory(void)
         0.4f, 0.4f, 0.4f
     };
 
+    static const GLfloat walls_data[] = {
+        0.0f,  0.0f,   0.0f,
+        0.0f,  0.0f,  40.0f,
+        0.0f,  1.0f,  40.0f,
+        0.0f,  1.0f,   0.0f,
+        0.0f,  0.0f,   0.0f,
+        0.0f,  1.0f,  40.0f,
 
-    // Our vertices. Tree consecutive floats give a 3D vertex; Three consecutive vertices give a triangle.
-    // A cube has 6 faces with 2 triangles each, so this makes 6*2=12 triangles, and 12*3 vertices
-    static const GLfloat g_vertex_buffer_data[] = {
-         0.0f, 0.0f, 0.0f,
-         0.0f, 0.0f, 2.0f,
-         0.0f, 2.0f, 2.0f,
-         2.0f, 2.0f, 0.0f,
-         0.0f, 0.0f, 0.0f,
-         0.0f, 2.0f, 0.0f,
-         2.0f, 0.0f, 2.0f,
-         0.0f, 0.0f, 0.0f,
-         2.0f, 0.0f, 0.0f,
-         2.0f, 2.0f, 0.0f,
-         2.0f, 0.0f, 0.0f,
-         0.0f, 0.0f, 0.0f,
-         0.0f, 0.0f, 0.0f,
-         0.0f, 2.0f, 2.0f,
-         0.0f, 2.0f, 0.0f,
-         2.0f, 0.0f, 2.0f,
-         0.0f, 0.0f, 2.0f,
-         0.0f, 0.0f, 0.0f,
-         0.0f, 2.0f, 2.0f,
-         0.0f, 0.0f, 2.0f,
-         2.0f, 0.0f, 2.0f,
-         2.0f, 2.0f, 2.0f,
-         2.0f, 0.0f, 0.0f,
-         2.0f, 2.0f, 2.0f,
-         2.0f, 0.0f, 0.0f,
-         2.0f, 2.0f, 2.0f,
-         2.0f, 0.0f, 2.0f,
-         2.0f, 2.0f, 2.0f,
-         2.0f, 2.0f, 0.0f,
-         0.0f, 2.0f, 0.0f,
-         2.0f, 2.0f, 2.0f,
-         0.0f, 2.0f, 0.0f,
-         0.0f, 2.0f, 2.0f,
-         2.0f, 2.0f, 2.0f,
-         0.0f, 2.0f, 2.0f,
-         2.0f, 0.0f, 2.0f
+        0.0f,  0.0f,   0.0f,
+        0.0f,  1.0f,   0.0f,
+       40.0f,  0.0f,   0.0f,
+       40.0f,  1.0f,   0.0f,
+        0.0f,  1.0f,   0.0f,
+       40.0f,  0.0f,   0.0f,
+
+       40.0f,  0.0f,   0.0f,
+       40.0f,  1.0f,   0.0f,
+       40.0f,  1.0f,  40.0f,
+       40.0f,  1.0f,  40.0f,
+       40.0f,  0.0f,  40.0f,
+       40.0f,  0.0f,   0.0f,
+
+       40.0f,  0.0f,  40.0f,
+       40.0f,  1.0f,  40.0f,
+        0.0f,  1.0f,  40.0f,
+        0.0f,  1.0f,  40.0f,
+        0.0f,  0.0f,  40.0f,
+       40.0f,  0.0f,  40.0f
     };
-    
-    // One color for each vertex. They were generated randomly.
-    static const GLfloat g_color_buffer_data[] = {
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
+
+    static const GLfloat walls_color[] = {
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f
     };
+
+
 
     // Move vertex data to video memory; specifically to VBO called vertexbuffer
     glGenBuffers(1, &plan);
@@ -169,26 +144,25 @@ void transferDataToGPUMemory(void)
     glGenBuffers(1, &plan_colorbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, plan_colorbuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(plan_color), plan_color, GL_STATIC_DRAW);
-    
+
     // Move vertex data to video memory; specifically to VBO called vertexbuffer
-    glGenBuffers(1, &vertexbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+    glGenBuffers(1, &walls);
+    glBindBuffer(GL_ARRAY_BUFFER, walls);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(walls_data), walls_data, GL_STATIC_DRAW);
     
     // Move color data to video memory; specifically to CBO called colorbuffer
-    glGenBuffers(1, &colorbuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
-    
+    glGenBuffers(1, &walls_collor);
+    glBindBuffer(GL_ARRAY_BUFFER, walls_collor);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(walls_color), walls_color, GL_STATIC_DRAW);
 }
 
 //--------------------------------------------------------------------------------
 void cleanupDataFromGPU()
 {
-    glDeleteBuffers(1, &vertexbuffer);
-    glDeleteBuffers(1, &colorbuffer);
     glDeleteBuffers(1, &plan);
     glDeleteBuffers(1, &plan_colorbuffer);
+    glDeleteBuffers(1, &walls);
+    glDeleteBuffers(1, &walls_collor);
     glDeleteVertexArrays(1, &VertexArrayID);
     glDeleteProgram(programID);
 }
@@ -203,10 +177,10 @@ void setMVP(void)
     Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
     // Camera matrix
     View       = glm::lookAt(
-                                       glm::vec3(10,15,-20), // Camera is at (4,3,-3), in World Space
+                                       glm::vec3(-30,20,-20), // Camera is at (4,3,-3), in World Space
                                        glm::vec3(10,0,10), // and looks at the origin
                                        glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-                                       );
+                            );
 
 }
 
@@ -217,45 +191,7 @@ void draw ()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // Use our shader
-    glUseProgram(programID);
-    
-    // Send our transformation to the currently bound shader,
-    // in the "MVP" uniform 
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP_cube[0][0]);
-    
-    // 1rst attribute buffer : vertices
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(
-                          0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-                          3,                  // size
-                          GL_FLOAT,           // type
-                          GL_FALSE,           // normalized?
-                          0,                  // stride
-                          (void*)0            // array buffer offset
-                          );
-    
-    // 2nd attribute buffer : colors
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
-    glVertexAttribPointer(
-                          1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-                          3,                                // size
-                          GL_FLOAT,                         // type
-                          GL_FALSE,                         // normalized?
-                          0,                                // stride
-                          (void*)0                          // array buffer offset
-                          );
-    
-    
-    //glEnable(GL_PROGRAM_POINT_SIZE);
-    //glPointSize(10);
-    // Draw the cube
-    glDrawArrays(GL_TRIANGLES, 0, 12*3); //
-
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    
+    glUseProgram(programID);  
 
     // Send our transformation to the currently bound shader,
     // in the "MVP" uniform
@@ -294,7 +230,44 @@ void draw ()
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 
+    
+     // Send our transformation to the currently bound shader,
+    // in the "MVP" uniform
+    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP_walls[0][0]);
+    
+    // 1rst attribute buffer : vertices
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, walls);
+    glVertexAttribPointer(
+                          0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+                          3,                  // size
+                          GL_FLOAT,           // type
+                          GL_FALSE,           // normalized?
+                          0,                  // stride
+                          (void*)0            // array buffer offset
+                          );
+    
+    // 2nd attribute buffer : colors
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, walls_collor);
+    glVertexAttribPointer(
+                          1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
+                          3,                                // size
+                          GL_FLOAT,                         // type
+                          GL_FALSE,                         // normalized?
+                          0,                                // stride
+                          (void*)0                          // array buffer offset
+                          );
+    
+    
+    //glEnable(GL_PROGRAM_POINT_SIZE);
+    //glPointSize(10);
+    // Draw the cube
+    glDrawArrays(GL_TRIANGLES, 0, 24); //
 
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    
 }
 //--------------------------------------------------------------------------------
 
@@ -344,40 +317,13 @@ int main( void )
     // render scene for each frame
     do{
 
-        if(glfwGetKey(window, GLFW_KEY_X)){
-            if(x + 0.5 <= 18.0)
-                x = x + 0.25;
-        }
-
-        if(glfwGetKey(window, GLFW_KEY_Z)){
-            if(z + 0.5 <= 18.0)
-                z = z + 0.25;
-
-        }
-
-        if(glfwGetKey(window, GLFW_KEY_Y)){
-            angulo += delta;
-            angulo = (angulo/360-1)*360;
-            
-        }
-
-
-
-
-        // Model matrix : an identity matrix (model will be at the origin)
-        
-        cube_Model = glm::rotate(glm::mat4(1.0),glm::radians(angulo),glm::vec3(0,1,0));
-        cube_Model      = glm::translate(glm::mat4(1.0), glm::vec3(x, 0.0f, z));
-        // Our ModelViewProjection : multiplication of our 3 matrices
-        MVP_cube                  = Projection * View * cube_Model;
-
         // Model matrix : an identity matrix (model will be at the origin)
         glm::mat4 plan_Model      = glm::mat4(1.0f);
+        //glm::mat4 walls_Model     = glm::mat4(1.0f);
         // Our ModelViewProjection : multiplication of our 3 matrices
         MVP_plan                  = Projection * View * plan_Model;
-
-
-
+        MVP_walls                 = Projection * View * walls_Model;
+        
         // draw cube
         draw();
         // Swap buffers
