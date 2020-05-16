@@ -4,6 +4,7 @@
 
 // Include GLEW
 #include <GL/glew.h>
+#include "coordinates.h"
 
 // Include GLFW
 #include <GLFW/glfw3.h>
@@ -46,7 +47,7 @@ glm::mat4 View = glm::mat4(1.0f);
 GLint WindowWidth = 1024;
 GLint WindowHeight = 768;
 
-
+float x = 0.0, z = 0.0, delta = 0.5, angulo = 0.0;
 
 //--------------------------------------------------------------------------------
 void transferDataToGPUMemory(void)
@@ -58,13 +59,14 @@ void transferDataToGPUMemory(void)
     // Create and compile our GLSL program from the shaders
     programID = LoadShaders( "TransformVertexShader.vertexshader", "ColorFragmentShader.fragmentshader" );
 
+    /*
     static const GLfloat plan_data[] = {
-        0.0f, 0.0f,  0.0f,
-        0.0f, 0.0f, 40.0f,
-       40.0f, 0.0f, 40.0f,
-       40.0f, 0.0f, 40.0f,
+        0.0f, 0.0f,   0.0f,
+        0.0f, 0.0f, 400.0f,
+      400.0f, 0.0f, 400.0f,
+      400.0f, 0.0f, 400.0f,
         0.0f, 0.0f,  0.0f, 
-       40.0f, 0.0f,  0.0f
+      400.0f, 0.0f,  0.0f
     };
 
     static const GLfloat plan_color[] = {
@@ -77,69 +79,31 @@ void transferDataToGPUMemory(void)
     };
 
     static const GLfloat walls_data[] = {
-        0.0f,  0.0f,   0.0f,
-        0.0f,  0.0f,  40.0f,
-        0.0f,  1.0f,  40.0f,
-        0.0f,  1.0f,   0.0f,
-        0.0f,  0.0f,   0.0f,
-        0.0f,  1.0f,  40.0f,
-
-        0.0f,  0.0f,   0.0f,
-        0.0f,  1.0f,   0.0f,
-       40.0f,  0.0f,   0.0f,
-       40.0f,  1.0f,   0.0f,
-        0.0f,  1.0f,   0.0f,
-       40.0f,  0.0f,   0.0f,
-
-       40.0f,  0.0f,   0.0f,
-       40.0f,  1.0f,   0.0f,
-       40.0f,  1.0f,  40.0f,
-       40.0f,  1.0f,  40.0f,
-       40.0f,  0.0f,  40.0f,
-       40.0f,  0.0f,   0.0f,
-
-       40.0f,  0.0f,  40.0f,
-       40.0f,  1.0f,  40.0f,
-        0.0f,  1.0f,  40.0f,
-        0.0f,  1.0f,  40.0f,
-        0.0f,  0.0f,  40.0f,
-       40.0f,  0.0f,  40.0f
-    };
+      0.0f,  0.0f,   0.0f,
+      0.0f,  0.0f, 400.0f,
+      0.0f, 20.0f, 400.0f,
+      0.0f, 20.0f,   0.0f,
+      0.0f,  0.0f, 400.0f,
+      0.0f, 20.0f, 400.0f
+    }
 
     static const GLfloat walls_color[] = {
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f
-    };
+      1.0f, 0.0f, 0.0f,
+      1.0f, 0.0f, 0.0f,
+      1.0f, 0.0f, 0.0f,
+      1.0f, 0.0f, 0.0f,
+      1.0f, 0.0f, 0.0f,
+      1.0f, 0.0f, 0.0f
+    }*/
 
 
 
     // Move vertex data to video memory; specifically to VBO called vertexbuffer
     glGenBuffers(1, &plan);
     glBindBuffer(GL_ARRAY_BUFFER, plan);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(plan_data), plan_data, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_array), vertex_array, GL_STATIC_DRAW);
     
+    /*
     // Move color data to video memory; specifically to CBO called colorbuffer
     glGenBuffers(1, &plan_colorbuffer);
     glBindBuffer(GL_ARRAY_BUFFER, plan_colorbuffer);
@@ -153,16 +117,16 @@ void transferDataToGPUMemory(void)
     // Move color data to video memory; specifically to CBO called colorbuffer
     glGenBuffers(1, &walls_collor);
     glBindBuffer(GL_ARRAY_BUFFER, walls_collor);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(walls_color), walls_color, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(walls_color), walls_color, GL_STATIC_DRAW);*/
 }
 
 //--------------------------------------------------------------------------------
 void cleanupDataFromGPU()
 {
-    glDeleteBuffers(1, &plan);
+    glDeleteBuffers(1, &plan);/*
     glDeleteBuffers(1, &plan_colorbuffer);
     glDeleteBuffers(1, &walls);
-    glDeleteBuffers(1, &walls_collor);
+    glDeleteBuffers(1, &walls_collor);*/
     glDeleteVertexArrays(1, &VertexArrayID);
     glDeleteProgram(programID);
 }
@@ -177,10 +141,10 @@ void setMVP(void)
     Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
     // Camera matrix
     View       = glm::lookAt(
-                                       glm::vec3(-30,20,-20), // Camera is at (4,3,-3), in World Space
-                                       glm::vec3(10,0,10), // and looks at the origin
+                                       glm::vec3(0,30,0), // Camera is at (4,3,-3), in World Space
+                                       glm::vec3(20,-20,-20), // and looks at the origin
                                        glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-                            );
+                                       );
 
 }
 
@@ -208,6 +172,11 @@ void draw ()
                           0,                  // stride
                           (void*)0            // array buffer offset
                           );
+
+
+    glDrawArrays(GL_TRIANGLES, 0, 639073);
+
+    /*
     
     // 2nd attribute buffer : colors
     glEnableVertexAttribArray(1);
@@ -230,7 +199,6 @@ void draw ()
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 
-    
      // Send our transformation to the currently bound shader,
     // in the "MVP" uniform
     glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP_walls[0][0]);
@@ -263,11 +231,11 @@ void draw ()
     //glEnable(GL_PROGRAM_POINT_SIZE);
     //glPointSize(10);
     // Draw the cube
-    glDrawArrays(GL_TRIANGLES, 0, 24); //
+    glDrawArrays(GL_TRIANGLES, 0, 6); //*/
 
     glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    
+    //glDisableVertexAttribArray(1);
+
 }
 //--------------------------------------------------------------------------------
 
@@ -322,7 +290,7 @@ int main( void )
         //glm::mat4 walls_Model     = glm::mat4(1.0f);
         // Our ModelViewProjection : multiplication of our 3 matrices
         MVP_plan                  = Projection * View * plan_Model;
-        MVP_walls                 = Projection * View * walls_Model;
+        //MVP_walls                 = Projection * View * walls_Model;
         
         // draw cube
         draw();
