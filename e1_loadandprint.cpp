@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 
 			for (int j = 0; j < curMesh.Vertices.size(); j++)
 			{
-				file << 0.6 << ", " << 0.6 << ", " << 0.6 << ", \n";
+				file << 0.59 << ", " << 0.29 << ", " << 0 << ", \n";
 			}
 
 
