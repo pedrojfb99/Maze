@@ -202007,7 +202007,7 @@ int main( void )
 
 
 
-               camera_x += 0.002;
+               camera_x -= 0.001;
                look_at_x -=0.001;
                tx -= 0.001;
 
@@ -202017,16 +202017,10 @@ int main( void )
 
 
       if (glfwGetKey(window, GLFW_KEY_D)){
-
                look_at_x += 0.001;
-               camera_x -= 0.002;
+               camera_x += 0.002;
                tx += 0.001;
-
         }
-
-
-
-
 
         bola_Model = glm::translate(bola_Model,glm::vec3(tx,tz,ty));
 
@@ -202034,9 +202028,6 @@ int main( void )
         MVP_plan  = Projection * View * plan_Model;
         MVP_bola  = Projection * View * bola_Model;
         MVP_resto  = Projection * View * resto_Model;
-
-        
-
 
         draw();
 
