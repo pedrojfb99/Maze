@@ -15,6 +15,8 @@ GLFWwindow* window;
 #include <glm/gtc/type_ptr.hpp>
 using namespace glm;
 
+#include "camera.h"
+
 // shaders header file
 #include "common/shader.hpp"
 
@@ -51,18 +53,72 @@ glm::mat4 resto_Model = glm::mat4(1.0f);
 glm::mat4 Projection = glm::mat4(1.0f);
 glm::mat4 View = glm::mat4(1.0f);
 
-GLint WindowWidth = 1024;
-GLint WindowHeight = 768;
 
 
-float tx = 0, ty = 0, tz = 0;
+// settings
+const unsigned int SCR_WIDTH = 1920;
+const unsigned int SCR_HEIGHT = 1024;
 
-float camera_x = -13.5, camera_z = -0.5, camera_y = 19;
+GLint WindowWidth = 1920;
+GLint WindowHeight = 1024;
 
-float look_at_x = -13.5, look_at_z = 0.3, look_at_y = 16;
+
+
+// camera
+Camera camera(glm::vec3(-13.5f, -0.5f, 16.0f)); // posição inicial da camera
+
+float lastX = SCR_WIDTH / 2.0f;
+float lastY = SCR_HEIGHT / 2.0f;
+bool firstMouse = true;
+
+
+// timing
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
 
 
 float x = 0.0, z = 0.0, delta = 0.5, angulo = 0.0;
+
+
+// glfw: whenever the mouse moves, this callback is called
+// -------------------------------------------------------
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+    
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+    
+    lastX = xpos;
+    lastY = ypos;
+    
+    camera.ProcessMouseMovement(xoffset, yoffset);
+}
+
+
+
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+    
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.ProcessKeyboard(FORWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.ProcessKeyboard(LEFT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.ProcessKeyboard(RIGHT, deltaTime);
+}
+
+
 
 //--------------------------------------------------------------------------------
 void transferDataToGPUMemory(void)
@@ -201770,25 +201826,9 @@ void setMVP(void)
     MatrixID = glGetUniformLocation(programID, "MVP");
     
     // Projection matrix : 45 Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-    Projection = glm::perspective(glm::radians(50.0f), 4.0f / 3.0f, 0.1f, 100.0f);
+    Projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     // Camera matrix
-    View       = glm::lookAt(
-                                       //Primeiro direira esquerda
-                                       // SEgundo - altura
-
-
-
-                                       //Terceiro mexe com  frente e etrás
-                                       //Posição da camera -> tem de seguir a bola
-                                       glm::vec3(camera_x,camera_z,camera_y), // Camera is at (4,3,-3), in World Space
-                                       //glm::vec3(-13.5,50,19), Visão te cima 
-
-                                       glm::vec3(look_at_x,look_at_z,look_at_y), // and looks at the origin
-                                       // glm::vec3(0,0,0), 
-
-                                       //glm::vec3(10,0,-40), // and looks at the origin
-                                       glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-                                       );
+    View  = camera.GetViewMatrix();
 
 }
 
@@ -201942,6 +201982,7 @@ int main( void )
     
     // Create window context
     glfwMakeContextCurrent(window);
+    glfwSetCursorPosCallback(window, mouse_callback);
     
     // Initialize GLEW
     glewExperimental = true; // Needed for core profile
@@ -201970,63 +202011,31 @@ int main( void )
     do{
 
 
-          // set the model-view-projection matrix
-            setMVP();
+    	//Definimos o delta time
+    	float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+
+
+        processInput(window);
+
+
+
+      // set the model-view-projection matrix
+        setMVP();
 
         // Model matrix : an identity matrix (model will be at the origin)
         glm::mat4 plan_Model = glm::mat4(1.0f);
         glm::mat4 resto_Model =  glm::mat4(1.0f);
-        glm::mat4 bola_Model =  glm::mat4(1.0f);
+        //glm::mat4 bola_Model =  glm::mat4(1.0f);
 
 
-
-         if (glfwGetKey(window, GLFW_KEY_W)){
-
-               ty -= 0.001;
-               look_at_y -= 0.001;
-               camera_y -=0.001;
-
-        }
-
-
-
-
-         if (glfwGetKey(window, GLFW_KEY_S)){
-
-               ty += 0.001;
-               look_at_y += 0.001;
-               camera_y +=0.001;
-
-
-        }
-
-
-
-
-         if (glfwGetKey(window, GLFW_KEY_A)){
-
-
-
-               camera_x -= 0.001;
-               look_at_x -=0.001;
-               tx -= 0.001;
-
-        }
-
-
-
-
-      if (glfwGetKey(window, GLFW_KEY_D)){
-               look_at_x += 0.001;
-               camera_x += 0.002;
-               tx += 0.001;
-        }
-
-        bola_Model = glm::translate(bola_Model,glm::vec3(tx,tz,ty));
+        //bola_Model = glm::translate(bola_Model,glm::vec3(tx,tz,ty));
 
         // Our ModelViewProjection : multiplication of our 3 matrices
         MVP_plan  = Projection * View * plan_Model;
-        MVP_bola  = Projection * View * bola_Model;
+        //MVP_bola  = Projection * View * bola_Model;
         MVP_resto  = Projection * View * resto_Model;
 
         draw();
@@ -202049,4 +202058,5 @@ int main( void )
     
     return 0;
 }
+
 
