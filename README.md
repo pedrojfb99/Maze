@@ -1,6 +1,17 @@
 # Maze
- Projeto de CG
 
-RAPOSO -> Já tenho a camera a andar e a rodar pelo mapa, agora faltam os limites.
+Falta:
 
-Já agora , uma maneira de impedir a camera de subir acho que pode ser irmos á biblioteca camera.h e cancelarmos lá o movimento para cima e para baixo. 
+- Jogabilidade:
+	- Definição dos limites do utilizador com as paredes.
+	- Buraco vencedor.
+	- Etc.
+
+- Câmera:
+	- [x] Definir ponto de começo.
+	- [x] Não deixar o utilizador andar para cima e para baixo!
+
+- Textura:
+	- ?
+
+- Relatório

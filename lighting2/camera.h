@@ -68,10 +68,12 @@ public:
 
     // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
-    {
+    {   
         float velocity = MovementSpeed * deltaTime;
-        if (direction == FORWARD)
+        if (direction == FORWARD){
             Position += Front * velocity;
+            printf("%f %f %f \n", Position.x, Position.y, Position.z);
+        }
         if (direction == BACKWARD)
             Position -= Front * velocity;
         if (direction == LEFT)
@@ -120,7 +122,7 @@ private:
         // Calculate the new Front vector
         glm::vec3 front;
         front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        front.y = sin(glm::radians(Pitch));
+        front.y = 0;
         front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
         Front = glm::normalize(front);
         // Also re-calculate the Right and Up vector

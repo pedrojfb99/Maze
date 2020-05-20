@@ -20,7 +20,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(-13.5f, 0.5f, 16.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -30,7 +30,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 // lighting
-glm::vec3 lightPos(0.0f, -7.0f, 0.0f);
+glm::vec3 lightPos(0.0f, 15.0f, 0.0f);
 
 int main()
 {
@@ -103091,9 +103091,9 @@ float paredes[] = {
         lightingShader_walls.setVec3("viewPos", camera.Position);
 
         glm::vec3 lightColorExtWall;
-        lightColorExtWall.r = 2.0f;
-        lightColorExtWall.g = 0.7f;
-        lightColorExtWall.b = 1.3f;
+        lightColorExtWall.r = 1.0f;
+        lightColorExtWall.g = 1.0f;
+        lightColorExtWall.b = 1.0f;
 
         glm::vec3 diffColorExtWall = lightColorExtWall * glm::vec3(0.5f);
         glm::vec3 ambientColorExtWall = diffColorExtWall * glm::vec3(0.2f);
@@ -103102,8 +103102,8 @@ float paredes[] = {
         lightingShader_walls.setVec3("light.diffuse", diffColorExtWall.r, diffColorExtWall.g, diffColorExtWall.b);
         lightingShader_walls.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-        lightingShader_walls.setVec3("extWall.ambient", 1.0f,0.0f,0.0f);
-        lightingShader_walls.setVec3("extWall.diffuse", 1.0f,0.0f,0.0f);
+        lightingShader_walls.setVec3("extWall.ambient", 0.0f,0.0f,0.0f);
+        lightingShader_walls.setVec3("extWall.diffuse", 0.0f,0.0f,0.0f);
         lightingShader_walls.setVec3("extWall.specular", 0.5f, 0.5f, 0.5f);
         lightingShader_walls.setFloat("extWall.shine", 32.0f);
 
@@ -103130,9 +103130,9 @@ float paredes[] = {
 
 
     	glm::vec3 lightColorIntWall;
-    	lightColorIntWall.r = 2.0f;
-    	lightColorIntWall.g = 0.7f;
-    	lightColorIntWall.b = 1.3f;
+    	lightColorIntWall.r = 1.5f;
+    	lightColorIntWall.g = 1.0f;
+    	lightColorIntWall.b = 1.5f;
 
     	glm::vec3 diffColorIntWall = lightColorIntWall * glm::vec3(0.5f);
     	glm::vec3 ambientColorIntWall = diffColorIntWall * glm::vec3(0.2f);
@@ -103141,8 +103141,8 @@ float paredes[] = {
     	lightingShader_intWalls.setVec3("light.diffuse", diffColorIntWall.r, diffColorIntWall.g, diffColorIntWall.b);
     	lightingShader_intWalls.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-    	lightingShader_intWalls.setVec3("intWall.ambient", 0.0f, 0.0f, 1.0f);
-    	lightingShader_intWalls.setVec3("intWall.diffuse", 0.0f, 0.0f, 1.0f);
+    	lightingShader_intWalls.setVec3("intWall.ambient", 0.217f, 0.017f, 0.0f);
+    	lightingShader_intWalls.setVec3("intWall.diffuse",  0.217f, 0.017f, 0.0f);
     	lightingShader_intWalls.setVec3("intWall.specular", 0.5f, 0.5f, 0.5f);
     	lightingShader_intWalls.setFloat("intWall.shine", 32.0f);
 
@@ -103169,8 +103169,8 @@ float paredes[] = {
 
         glm::vec3 lightColorBlock;
         lightColorBlock.r = 2.0f;
-        lightColorBlock.g = 0.7f;
-        lightColorBlock.b = 1.3f;
+        lightColorBlock.g = 1.0f;
+        lightColorBlock.b = 1.0f;
 
         glm::vec3 diffColorBlock = lightColorBlock * glm::vec3(0.5f);
         glm::vec3 ambientColorBlock = diffColorBlock * glm::vec3(0.2f);
@@ -103179,8 +103179,8 @@ float paredes[] = {
         lightingShader_block.setVec3("light.diffuse", diffColorBlock.r, diffColorBlock.g, diffColorBlock.b);
         lightingShader_block.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-        lightingShader_block.setVec3("block.ambient", 1.0f, 0.0f, 1.0f);
-        lightingShader_block.setVec3("block.diffuse", 1.0f, 0.0f, 1.0f);
+        lightingShader_block.setVec3("block.ambient", 0.227f, 0.245f, 0.249f);
+        lightingShader_block.setVec3("block.diffuse", 0.227f, 0.245f, 0.249f);
         lightingShader_block.setVec3("block.specular", 0.5f, 0.5f, 0.5f);
         lightingShader_block.setFloat("block.shine", 32.0f);
 
@@ -103275,9 +103275,11 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-    
+
     lastX = xpos;
     lastY = ypos;
+
+    //printf("(%f, %f)\n", lastX, lastY);
     
     camera.ProcessMouseMovement(xoffset, yoffset);
 }
