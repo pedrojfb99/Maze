@@ -18,8 +18,8 @@ enum Camera_Movement {
 // Default camera values
 const float YAW         = -90.0f;
 const float PITCH       =  0.0f;
-const float SPEED       =  2.0f;
-const float SENSITIVITY =  0.2f;
+const float SPEED       =  10.0f;
+const float SENSITIVITY =  0.01f;
 const float ZOOM        =  45.0f;
 
 
@@ -85,16 +85,285 @@ public:
             return false;
         }
 
+
+
+
+
+
         // Blocos
         if( ((x < -14.75) && y > 11.75)){
-            printf("por caralgho\n");
             return false;
         }
 
-        if( (-12.2 < x < -6.8) && (y > 11.75)){
-            printf("1\n");
+        if( (x > -12.2 && x  < -6.8 ) && (y > 11.75)){
             return false;
         }
+
+
+
+        if (( x > -4.2 && x < 13.2) && ( y < 18.2 && y > 11.8)){
+            return false;
+        }
+
+
+        if (( x > 2.8 && x < 7.2) && ( y < 9.2 && y > 4.8)){
+            return false;
+        }   
+
+
+
+       if (( x > 8.8 && x < 13.2) && ( y < 9.2  && y > 4.8)){
+            return false;
+        }
+
+
+        if (( x > -0.2 && x < 13.2) && ( y < -10.8 && y > -18.2)){
+            return false;
+        }
+
+
+
+        if (( x > 7.8 && x < 13.2) && ( y < -2.8 && y > -18.2 )){
+            return false;
+        }
+
+
+        if (( x > -4.2 && x < 4.2) && ( y < -2.8 && y > -7.2 )){
+            return false;
+        }
+
+
+        if (( x > -9.2 && x < -3.8) && ( y < -15.8 && y > -18.2 )){
+            return false;
+        }
+
+
+        if (( x > -8.2 && x < -5.8) && ( y < -0.8 && y > -7.2 )){
+            return false;
+        }
+
+
+        if (( x > -13.2 && x < -3.8) && ( y < 5.2 && y >0.8 )){
+            return false;
+        }
+
+
+
+        //Colisões dos blocos acabada
+
+
+
+
+
+
+
+        //Paredes Interiores
+
+
+
+
+        if (( x > -17.2 && x < 0.2) && ( y < 9.2  &&  y > 8.8)){
+            return false;
+        }
+
+
+
+        if (( x > -0.2 && x <0.2) && ( y < 9.2  &&  y > 2.8)){
+            return false;
+        }
+
+
+
+        if (( x > -0.2 && x < 13.2) && ( y < 3.2  &&  y > 2.8)){
+            return false;
+        }
+
+
+
+
+        if (( x > 12.8 && x < 13.2) && ( y < 3.2  &&  y > 0.8)){
+            return false;
+        }
+
+
+
+
+        if (( x > 12.8 && x < 16.2) && ( y < 1.2  &&  y > 0.8)){
+            return false;
+        }
+
+
+
+
+        if (( x > 8.8 && x < 16.2) && ( y < 5.2  &&  y > 4.8)){
+            return false;
+        }
+
+
+
+
+        if (( x > 15.8 && x < 16.2) && ( y < 18.2  &&  y > -14.2)){
+            return false;
+        }
+
+
+
+        if (( x > 17.8 && x < 18.2) && ( y < 18.2  &&  y > -14.2)){
+            return false;
+        }
+
+
+
+        if (( x > 15.8 && x < 18.2) && ( y <  -13.8 &&  y > -14.2)){
+            return false;
+        }
+
+
+
+        if (( x > 13.8 && x < 14.2) && ( y < -15.8  &&  y > -18.2)){
+            return false;
+        }
+
+
+
+        if (( x > -0.2 && x < 19.8) && ( y < -17.8  &&  y > -18.2)){
+            return false;
+        }
+
+
+
+        if (( x > -4.2 && x < -3.8) && ( y < 9.2  &&  y > -13.2)){
+            return false;
+        }
+
+
+
+        if (( x > -6.2 && x < -3.8) && ( y < -12.8  &&  y > -13.2)){
+            return false;
+        }
+
+
+
+        if (( x > -6.2 && x < -5.8) && ( y < -6.8 &&  y > -13.2)){
+            return false;
+        }
+
+
+
+
+        if (( x > -10.2 && x < -5.8) && ( y < -6.8  &&  y > -7.2)){
+            return false;
+        }
+
+
+
+
+        if (( x > -15.2 && x < -11.8) && ( y < -6.8  &&  y > -7.2)){
+            return false;
+        }
+
+
+
+
+        if (( x > -15.2 && x < -14.8) && ( y < 7.2 &&  y > -7.2)){
+            return false;
+        }
+
+
+        if (( x > 15.4 && x < -14.8) && ( y < 7.2 &&  y > -7.2)){
+            return false;
+        }
+
+
+
+        if (( x > -15.2 && x < -3.8) && ( y < 7.2  &&  y > 6.8)){
+            return false;
+        }
+
+
+
+
+        if (( x > -17.2 && x < -16.8) && ( y < 9.2  &&  y > -19.8)){
+            return false;
+        }
+
+
+
+        if (( x > -17.2 && x < -14.8) && ( y < -17.8  &&  y > -18.2)){
+            return false;
+        }
+
+
+
+        if (( x > -15.2 && x < -14.8) && ( y < -9.8  &&  y > -18.2)){
+            return false;
+        }
+
+
+
+
+        if (( x > -15.2 && x < -8.8) && ( y < -9.8  &&  y > -10.2)){
+            return false;
+        }
+
+
+
+        if (( x > -12.2 && x < -11.8) && ( y < -9.8  &&  y > -18.2)){
+            return false;
+        }
+
+
+
+
+        if (( x > -9.2 && x < -8.8) && ( y < -9.8  &&  y > -18.2)){
+            return false;
+        }
+
+
+
+
+         if (( x > 15.8 && x < 16.2) && ( y < -15.8  &&  y > -18.2)){
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         return true;
     }
