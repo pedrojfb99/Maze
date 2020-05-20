@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 	objl::Loader Loader;
 
 	// Load .obj File
-	bool loadout = Loader.LoadFile("labirinto.obj");
+	bool loadout = Loader.LoadFile("light.obj");
 
 	// Check to see if it loaded
 
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 	if (loadout)
 	{
 		// Create/Open e1Out.txt
-		std::ofstream file("main.txt");
+		std::ofstream file("bola.txt");
 
 		// Go through each loaded mesh and out its contents
 		for (int i = 0; i < Loader.LoadedMeshes.size(); i++)
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 			for (int j = 0; j < curMesh.Vertices.size(); j++)
 			{
 
-				file << curMesh.Vertices[j].Position.X << ", " << curMesh.Vertices[j].Position.Y << ", " << curMesh.Vertices[j].Position.Z << ", \n";
+				file << curMesh.Vertices[j].Position.X << ", " << curMesh.Vertices[j].Position.Y << ", " << curMesh.Vertices[j].Position.Z << ", " << curMesh.Vertices[j].Normal.X << ", " << curMesh.Vertices[j].Normal.Y << ", " << curMesh.Vertices[j].Normal.Z << ", \n";
 
 
 			}
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 	else
 	{
 		// Create/Open e1Out.txt
-		std::ofstream file("main.txt");
+		std::ofstream file("bola.txt");
 
 		// Output Error
 		file << "Failed to Load File. May have failed to find it or it was not an .obj file.\n";
