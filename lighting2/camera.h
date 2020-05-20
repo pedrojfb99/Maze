@@ -33,6 +33,7 @@ public:
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
+    glm::vec3 aux_Position;
     // Euler Angles
     float Yaw;
     float Pitch;
@@ -66,20 +67,63 @@ public:
         return glm::lookAt(Position, Position + Front, Up);
     }
 
+    bool EvaluateCoordinates(float x, float y){
+
+        printf("(%f, %f)\n", x, y);
+
+        // Paredes Exteriores
+        if(x < -19.8 ){
+            return false;
+        }
+        if(x > 19.8 ){
+            return false;
+        }
+        if(y < -19.5) {
+            return false;
+        }
+        if(y > 19.5){
+            return false;
+        }
+
+        // Blocos
+        if( ((x < -14.75) && y > 11.75)){
+            printf("por caralgho\n");
+            return false;
+        }
+
+        if( (-12.2 < x < -6.8) && (y > 11.75)){
+            printf("1\n");
+            return false;
+        }
+
+        return true;
+    }
+
     // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, float deltaTime)
     {   
+        aux_Position = Position;
         float velocity = MovementSpeed * deltaTime;
         if (direction == FORWARD){
             Position += Front * velocity;
-            printf("%f %f %f \n", Position.x, Position.y, Position.z);
+            if(!EvaluateCoordinates(Position.x, Position.z))
+                Position = aux_Position;
         }
-        if (direction == BACKWARD)
+        if (direction == BACKWARD){
             Position -= Front * velocity;
-        if (direction == LEFT)
+            if(!EvaluateCoordinates(Position.x, Position.z))
+                Position = aux_Position;
+        }
+        if (direction == LEFT){
             Position -= Right * velocity;
-        if (direction == RIGHT)
+            if(!EvaluateCoordinates(Position.x, Position.z))
+                Position = aux_Position;
+        }
+        if (direction == RIGHT){
             Position += Right * velocity;
+            if(!EvaluateCoordinates(Position.x, Position.z))
+                Position = aux_Position;
+        }
     }
 
     // Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
@@ -131,3 +175,5 @@ private:
     }
 };
 #endif
+
+
