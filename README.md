@@ -3,9 +3,10 @@
 Falta:
 
 - Jogabilidade:
-	- Definição dos limites do utilizador com as paredes.
+	- [x] Definição dos limites do utilizador com as paredes.
 	- Buraco vencedor.
-	- Etc.
+	- Meter bandeira.
+	- Limities buracos.
 
 - Câmera:
 	- [x] Definir ponto de começo.
