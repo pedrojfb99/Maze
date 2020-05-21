@@ -103102,8 +103102,8 @@ float paredes[] = {
         lightingShader_walls.setVec3("light.diffuse", diffColorExtWall.r, diffColorExtWall.g, diffColorExtWall.b);
         lightingShader_walls.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
-        lightingShader_walls.setVec3("extWall.ambient", 0.0f,0.0f,0.0f);
-        lightingShader_walls.setVec3("extWall.diffuse", 0.0f,0.0f,0.0f);
+        lightingShader_walls.setVec3("extWall.ambient", 1.0f,1.0f,1.0f);
+        lightingShader_walls.setVec3("extWall.diffuse", 1.0f,1.0f,1.0f);
         lightingShader_walls.setVec3("extWall.specular", 0.5f, 0.5f, 0.5f);
         lightingShader_walls.setFloat("extWall.shine", 32.0f);
 

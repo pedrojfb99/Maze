@@ -23,6 +23,11 @@ const float SPEED       =  5.0f;
 const float SENSITIVITY =  0.2f;
 const float ZOOM        =  45.0f;
 
+// type of game
+int level = 1;
+// spawn vector
+glm::vec3 spawn = glm::vec3(-13.5f, 0.5f, 16.0f);
+
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
 class Camera
@@ -254,6 +259,20 @@ public:
         }
 
         if((pow((x + 4.519),2.0) + (pow((y + 13.92),2.0))) <= (pow(1,2))){
+            if(level == 3){
+                // upgrade level
+                level = 1;
+                // change spawn location
+                Position.x = -13.5f;
+                Position.y = 0.5f;
+                Position.z = 16.0f; 
+                // spawn
+                spawn.x = -13.5f;
+                spawn.y = 0.5f;
+                spawn.z = 16.0f;
+                // return
+                return 0;
+            }
             return -2;
         }
 
@@ -261,11 +280,39 @@ public:
             return -2;
         }
 
-        if((pow((x - 5.312),2.0) + (pow((y - 8.12),2.0))) <= (pow(1.4,2))){
-            return 0;
+        if((pow((x + 5.312),2.0) + (pow((y - 8.12),2.0))) <= (pow(1.0,2))){
+            if(level == 1){
+                // upgrade level
+                level++;
+                // change spawn location
+                Position.x = -13.51f;
+                Position.y = 0.5f;
+                Position.z = -11.19f; 
+                // spawn
+                spawn.x = -13.51f;
+                spawn.y = 0.5f;
+                spawn.z = -11.19f;
+                // return
+                return 0;
+            }
+            return -2;
         }
 
         if((pow((x + 16.81),2.0) + (pow((y + 11.89),2.0))) <= (pow(1,2))){
+            if(level == 2){
+                // upgrade level
+                level++;
+                // change spawn location
+                Position.x = 14.6f;
+                Position.y = 0.5f;
+                Position.z = 2.0f; 
+                // spawn
+                spawn.x = 14.6f;
+                spawn.y = 0.5;
+                spawn.z = 2.0f;
+                // return
+                return 0;
+            }
             return -2;
         }
 
@@ -290,9 +337,7 @@ public:
             if(EvaluateCoordinates(Position.x, Position.z) == -1)
                 Position = aux_Position;
             else if(EvaluateCoordinates(Position.x, Position.z) == -2){
-                Position.x = -13.5;
-                Position.y = 0.5f;
-                Position.z = 16.0f;
+                Position = spawn;
             }
         }
         if (direction == BACKWARD){
@@ -300,9 +345,7 @@ public:
             if(EvaluateCoordinates(Position.x, Position.z) == -1)
                 Position = aux_Position;
             else if(EvaluateCoordinates(Position.x, Position.z) == -2){
-                Position.x = -13.5;
-                Position.y = 0.5f;
-                Position.z = 16.0f;
+                Position = spawn;
             }
         }
         if (direction == LEFT){
@@ -310,9 +353,7 @@ public:
             if(EvaluateCoordinates(Position.x, Position.z) == -1)
                 Position = aux_Position;
             else if(EvaluateCoordinates(Position.x, Position.z) == -2){
-                Position.x = -13.5;
-                Position.y = 0.5f;
-                Position.z = 16.0f;
+                Position = spawn;
             }
         }
         if (direction == RIGHT){
@@ -320,9 +361,7 @@ public:
             if(EvaluateCoordinates(Position.x, Position.z) == -1)
                 Position = aux_Position;
             else if(EvaluateCoordinates(Position.x, Position.z) == -2){
-                Position.x = -13.5;
-                Position.y = 0.5f;
-                Position.z = 16.0f;
+                Position = spawn;
             }
         }
     }
