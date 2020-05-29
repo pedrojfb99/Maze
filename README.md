@@ -15,7 +15,7 @@
 	- [Compile](#compile)
 	- [Run](#run)
 - [Demo](#demo)
-- [Tests](#tests)
+- [Team](#team)
 - [License](#license)
 ---
 
@@ -82,13 +82,19 @@ If you have already compiled, execute the program.
 $ ./a.out
 ```
 
+---
 ## Demo
 
-![](CG-2-2020-05-29_23.50.01.gif)
+<img src="https://i.imgur.com/dR9wY1e.gif" width="1000">
 
-## Tests
+---
+## Tean
 
-
+- [António Sardinha](https://github.com/ToniSardinha64)
+- [Pedro Brito](https://github.com/XiBiTuH)
+- [Rui Raposo](https://github.com/rui-raposo)
+ 
+---
 ## License
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
