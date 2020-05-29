@@ -20,7 +20,7 @@ enum Camera_Movement {
 const float YAW         = -90.0f;
 const float PITCH       =  0.0f;
 const float SPEED       =  5.0f;
-const float SENSITIVITY =  0.002f;
+const float SENSITIVITY =  1.0f;
 const float ZOOM        =  45.0f;
 
 
@@ -69,8 +69,6 @@ public:
     }
 
     int EvaluateCoordinates(float x, float y){
-
-        printf("(%f, %f)\n", x, y);
 
         // Paredes Exteriores
         if(x < -19.8 ){

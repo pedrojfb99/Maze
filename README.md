@@ -12,7 +12,11 @@
 		- [GLM](#glm)
 		- [GLEW](#glew)
 	- [Clone](#clone)
-
+	- [Compile](#compile)
+	- [Run](#run)
+- [Demo](#demo)
+- [Tests](#tests)
+- [License](#license)
 ---
 
 ## Installation
@@ -32,7 +36,7 @@ $ echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 
 #### GLFW
 
-Use the following command in order to install **glfw** librarie.
+Use the following command in order to install **glfw** library.
 
 ```shell
 brew install glfw
@@ -40,7 +44,7 @@ brew install glfw
 
 #### GLM
 
-Use the following command in order to install **glfw** librarie.
+Use the following command in order to install **glfw** library.
 
 ```shell
 brew install glm
@@ -48,7 +52,7 @@ brew install glm
 
 #### GLEW
 
-Use the following command in order to install **glfw** librarie.
+Use the following command in order to install **glfw** library.
 
 ```shell
 brew install glew
@@ -62,3 +66,31 @@ Use the following command in order to clone the repository.
 $ git clone https://github.com/XiBiTuH/Maze.git
 ```
 
+### Compile
+
+Use the following command in order to compile.
+
+```shell
+$ g++ main.cpp -lGL -lGLEW -lglfw
+```
+
+### Run
+
+If you have already compiled, execute the program.
+
+```shell
+$ ./a.out
+```
+
+## Demo
+
+![](CG-2-2020-05-29_23.50.01.gif)
+
+## Tests
+
+
+## License
+
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**

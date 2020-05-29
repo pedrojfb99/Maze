@@ -90,7 +90,7 @@ int main()
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
-    float vertices[] = {/
+    float vertices[] = {
 20, 0, -19.6875, 0, 1, 0, 
 19.6875, 0, -20, 0, 1, 0, 
 19.6875, 0, -19.6875, 0, 1, 0, 
