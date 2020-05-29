@@ -88,7 +88,7 @@ $ ./a.out
 <img src="https://i.imgur.com/dR9wY1e.gif" width="1000">
 
 ---
-## Tean
+## Team
 
 - [António Sardinha](https://github.com/ToniSardinha64)
 - [Pedro Brito](https://github.com/XiBiTuH)
