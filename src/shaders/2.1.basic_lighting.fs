@@ -1,6 +1,11 @@
 #version 330 core
 out vec4 FragColor;
 
+in vec2 TexCoords;
+
+uniform sampler2D texture1;
+
+
 struct Plan
 {
     vec3 ambient;
@@ -8,6 +13,7 @@ struct Plan
     vec3 specular;
     float shine;
 };
+
 
 struct Luz
 {
@@ -22,28 +28,33 @@ in vec3 FragPos;
 
   
 uniform vec3 viewPos;
-uniform Plan plan;
+uniform Plan intWall;
 uniform Luz light;
+
 
 void main()
 {
     // ambient Plan
-    vec3 ambientPlan = light.ambient * plan.ambient;
+    vec3 ambientPlan = light.ambient * intWall.ambient;
     
     // diffuse Plan
     vec3 normPlan = normalize(Normal);
     vec3 lightDirPlan = normalize(light.pos - FragPos);
     float diffPlan = max(dot(normPlan, lightDirPlan), 0.0);
-    vec3 diffusePlan = light.diffuse * (diffPlan * plan.diffuse);
+    vec3 diffusePlan = light.diffuse * (diffPlan * intWall.diffuse);
 
     // specular Plan
     vec3 viewDirPlan = normalize(viewPos - FragPos);
     vec3 reflectDirPlan = reflect(-lightDirPlan, normPlan);
-    float specPlan = pow(max(dot(viewDirPlan, reflectDirPlan), 0.0), plan.shine);
-    vec3 specularPlan = light.specular * (specPlan * plan.specular);
-            
-    vec3 resultPlan = ambientPlan + diffusePlan + specularPlan;
-    FragColor = vec4(resultPlan, 1.0);
+    float specPlan = pow(max(dot(viewDirPlan, reflectDirPlan), 0.0), intWall.shine);
+    vec3 specularPlan = light.specular * (specPlan * intWall.specular);
+         
 
+    vec4 tex = texture(texture1,TexCoords);
+    vec4 result = vec4(ambientPlan + diffusePlan + specularPlan,1.0);
+
+    FragColor =  mix(tex, result, 0);
 }   
+
+
 
