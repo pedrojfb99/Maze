@@ -53,7 +53,7 @@ void main()
     vec4 tex = texture(texture1,TexCoords);
     vec4 result = vec4(ambientPlan + diffusePlan + specularPlan,1.0);
 
-    FragColor =  mix(tex, result, 0.0);
+    FragColor =  mix(tex, result, 0.65);
 }   
 
 
